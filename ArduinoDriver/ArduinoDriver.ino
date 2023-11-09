@@ -3,7 +3,6 @@
 #include <Servo.h>
 #define SS_PIN 10
 #define RST_PIN 9
-#include <Servo.h>
 
 Servo servo;
 RFID rfid(SS_PIN, RST_PIN);
