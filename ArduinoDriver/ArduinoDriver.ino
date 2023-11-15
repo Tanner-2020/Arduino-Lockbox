@@ -16,7 +16,7 @@ void setup() {
   rfid.init();
   servo.attach(6);
   servo.write(0);
-  savedId = "NaN";
+  savedID = "NaN";
 }
 
 void loop() {
