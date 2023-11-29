@@ -10,3 +10,4 @@ while True:
     except:
         print("Keyboard Interrupt")
         break
+    print("hello!")
