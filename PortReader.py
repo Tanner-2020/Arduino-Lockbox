@@ -1,5 +1,5 @@
 import serial
-ser = serial.Serial('/dev/ttyACM0')
+ser = serial.Serial('COM2')
 ser.flushInput()
 
 while True:
