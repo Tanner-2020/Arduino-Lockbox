@@ -27,6 +27,6 @@ while True:
     # Code for file writing
     elif status_flag == True and ID_flag == True:
         file_object = open("output.txt", "a")
-        file_object.writelines(ser_bytes + "\n")
+        file_object.writelines(mod_ser_bytes + "\n")
         file_object.close()
         print(ser_bytes)
