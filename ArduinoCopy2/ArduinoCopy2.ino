@@ -35,9 +35,12 @@ void setup(){
   }
   Serial.println(String(status));
   long id = -1;
-  while (id < 0) {
+  while (id != 1) {
     Serial.println("ID");
-    id = atol(Serial.readString().c_str());
+    savedRfid = Serial.readString();
+    if(savedRfid.length() > 1){
+      id = 1;
+    }
     //if (id == NULL) {
 	//id = -1;
 	//}
@@ -46,13 +49,13 @@ void setup(){
   // Initializes lock settings to match last saved status
   if (status == 1) {
     servo.write(lock);
-    digitalWrite(5, HIGH);
-    digitalWrite(3, LOW);
-    savedRfid = String(id);
+    digitalWrite(3, HIGH);
+    digitalWrite(5, LOW);
   } else {
     servo.write(unlock);
-    digitalWrite(5, LOW);
-    digitalWrite(3, HIGH);
+    digitalWrite(3, LOW);
+    digitalWrite(5, HIGH);
+    savedRfid = "-1";
   }
 
 }
@@ -64,26 +67,24 @@ void loop() {
 
       if (savedRfid == "-1"){ // to lock
         savedRfid = currentRfid;
-        digitalWrite(5, HIGH);
-        digitalWrite(3, LOW);
+        digitalWrite(3, HIGH);
+        digitalWrite(5, LOW);
         Serial.println("1 1 " + String(rfid.serNum[0]) + "" + String(rfid.serNum[1]) + "" + String(rfid.serNum[2]) + "" + String(rfid.serNum[3]));
         servo.write(lock);
       } else if (currentRfid == savedRfid) { // to unlock
         savedRfid = "-1";
         Serial.println("1 2 " + String(rfid.serNum[0]) + "" + String(rfid.serNum[1]) + "" + String(rfid.serNum[2]) + "" + String(rfid.serNum[3]));
-        digitalWrite(5, LOW);
-        digitalWrite(3, HIGH);
+        digitalWrite(3, LOW);
+        digitalWrite(5, HIGH);
         servo.write(unlock);
       } else { // to remain locked if RFID does not work
-	Serial.println(currentRfid);
-	Serial.println(savedRfid);
         for(int i = 0; i < 10; i++){
-          digitalWrite(5, i % 2 == 0 ? HIGH : LOW);
-          digitalWrite(3, i % 2 == 0 ? LOW : HIGH);
+          digitalWrite(3, i % 2 == 0 ? HIGH : LOW);
+          digitalWrite(5, i % 2 == 0 ? LOW : HIGH);
           delay(250);
         }
-        digitalWrite(5, LOW);
         digitalWrite(3, HIGH);
+        digitalWrite(5, LOW);
         Serial.println("0 1 " + String(rfid.serNum[0]) + "" + String(rfid.serNum[1]) + "" + String(rfid.serNum[2]) + "" + String(rfid.serNum[3]));
       }
       delay(2000);
